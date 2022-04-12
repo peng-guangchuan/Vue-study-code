@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>回顾Object.defineproperty方法</title>
+</head>
+
+<body>
+	<!-- 
+			通过get/set实现了类似Java中的getter/setter
+			直接定义的对象属性会在chrome浏览器中直接显示出来，
+			而通过get/set则需要点击一下，值是点击（悬浮显示：Invoke property getter）的时候才确定的
+			Vue中数据双向绑定的基本原理
+		 -->
+	<script type="text/javascript">
+		// https://www.bilibili.com/video/BV1Zy4y1K7SH?p=11
+		let number = 18
+		let person = {
+			name: '张三',
+			sex: '男',
+			// age: number
+		}
+		// number = 19; 此处定义number后person中的number不会改变，age:number只是单纯的赋值过程
+
+		Object.defineProperty(person, 'age', {
+			// value:18,
+			// enumerable:true, //控制属性是否可以枚举，默认值是false
+			// writable:true, //控制属性是否可以被修改，默认值是false
+			// configurable:true //控制属性是否可以被删除，默认值是false
+
+			//当有人读取person的age属性时，get函数(getter)就会被调用，且返回值就是age的值
+			get() {
+				console.log('有人读取age属性了')
+				return number // age属性跟number进行了绑定
+			},
+
+			//当有人修改person的age属性时，set函数(setter)就会被调用，且会收到修改的具体值
+			set(value) {
+				console.log('有人修改了age属性，且值是', value)
+				number = value
+			}
+
+		})
+
+		// console.log(Object.keys(person))
+
+		console.log(person)
+	</script>
+</body>
+
+</html>
