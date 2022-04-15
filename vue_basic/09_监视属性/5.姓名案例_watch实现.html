@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>姓名案例_watch实现</title>
+	<script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+	<!-- 
+	computed和watch之间的区别：
+		1.computed能完成的功能，watch都可以完成。
+		2.watch能完成的功能，computed不一定能完成，例如：watch可以进行异步操作。
+		setTimeOut、async/await返回的Promise都不能在computed里使用生效
+	两个重要的小原则：
+		1.所被Vue管理的函数，最好写成普通函数，这样this的指向才是vm 或 组件实例对象。
+		2.所有不被Vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数），
+		最好写成箭头函数，这样this的指向才是vm 或 组件实例对象。 -->
+	<div id="root">
+		姓：<input type="text" v-model="firstName"> <br /><br />
+		名：<input type="text" v-model="lastName"> <br /><br />
+		全名：<span>{{fullName}}</span> <br /><br />
+	</div>
+</body>
+
+<script type="text/javascript">
+	Vue.config.productionTip = false
+
+	const vm = new Vue({
+		el: '#root',
+		data: {
+			firstName: '张',
+			lastName: '三',
+			fullName: '张-三'
+		},
+		watch: {
+			
+			firstName(val) {
+				// 箭头函数指向定义时的环境，根据定义时的代码向外寻找this
+				setTimeout(() => { // 此处箭头函数并不是vue所管理的函数，但必须写成箭头函数
+					console.log(this) // window，因为箭头函数向外找this，而firstName为vue所管理的函数，this指向vue实例
+					this.fullName = val + '-' + this.lastName
+				}, 1000);
+			},
+			firstName(val) {
+				// 普通js函数的this指向具体执行时的环境，谁调用，this就指向谁
+				setTimeout(function(){
+					console.log(this) // window，因为定时器是浏览器的js引擎在调用执行
+					this.fullName = val + '-' + this.lastName
+				}, 1000);
+			},
+			lastName(val) {
+				this.fullName = this.firstName + '-' + val
+			}
+		}
+	})
+</script>
+
+</html>
