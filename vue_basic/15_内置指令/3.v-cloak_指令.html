@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>v-cloak指令</title>
+	<style>
+		/* 通常v-cloak配合该CSS代码使用 */
+		[v-cloak] {
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 
+	v-cloak指令（没有值）：
+		1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+		2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。 -->
+	<div id="root">
+		<h2 v-cloak>{{name}}</h2>
+	</div>
+	<!-- 等5秒才请求回来 -->
+	<script type="text/javascript" src="http://localhost:8080/resource/5s/vue.js"></script>
+</body>
+
+<script type="text/javascript">
+	console.log(1)
+	Vue.config.productionTip = false
+
+	new Vue({
+		el: '#root',
+		data: {
+			name: '尚硅谷'
+		}
+	})
+</script>
+
+</html>
