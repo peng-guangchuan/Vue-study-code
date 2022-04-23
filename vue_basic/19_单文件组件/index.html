@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>练习一下单文件组件的语法</title>
+	</head>
+	<body>
+		<!-- 准备一个容器 -->
+		<div id="root"></div>
+		<div>
+			.vue文件就是个单文件的组件，不能进行new Vue的操作，无法拥有vm实例
+			需要在main.js里创建vm实例
+			引入vue组件文件可以省略.vue文件后缀名
+		</div>
+		<!-- 要在容器之后引入，否则无法拿到DOM节点 -->
+		<!-- <script type="text/javascript" src="../js/vue.js"></script> -->
+		<!-- <script type="text/javascript" src="./main.js"></script> -->
+	</body>
+</html>
