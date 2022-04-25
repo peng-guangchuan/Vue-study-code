@@ -4,9 +4,9 @@
 - 主要内容为Vue2.x，并学习了一些Vue3.x的新特性
 
 ## 版本
-vue@2.6.12
-@vue/cli@4.5.13
-less-loader@7
+- vue@2.6.12
+- @vue/cli@4.5.13
+- less-loader@7
 
 ## 目录
 ### [Vue.js](https://cn.vuejs.org/)基础
@@ -37,3 +37,5 @@ less-loader@7
 5. [Vue中插件](vue_test/05_src_插件/plugins.js)
 6. [scoped样式](vue_test/06_src_scoped样式/components/Student.vue)
 7. [TodoList案例](vue_test/07_src_TodoList案例/App.vue)
+8. [webStorage](vue_test/08_浏览器本地存储/localStorage.html)
+9. [TodoList案例v2-本地存储](vue_test/09_src_TodoList_本地存储/App.vue)
