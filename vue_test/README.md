@@ -131,3 +131,24 @@ props:{
     2. LocalStorage存储的内容，需要手动清除才会消失。
     3. `xxxxxStorage.getItem(xxx)`如果xxx对应的value获取不到，那么getItem的返回值是null。
     4. `JSON.parse(null)`的结果依然是null。
+
+## 组件的自定义事件
+
+1.  一种组件间通信的方式，适用于：**子组件 ===> 父组件** 
+1.  使用场景：A是父组件，B是子组件，B想给A传数据，那么就要在A中给B绑定自定义事件（事件的回调在A中）。 
+1.  绑定自定义事件： 
+   1.  第一种方式，在父组件中：`<Demo @atguigu="test"/>`  或 `<Demo v-on:atguigu="test"/>` 
+   1.  第二种方式，在父组件中： 
+```javascript
+<Demo ref="demo"/>
+......
+mounted(){
+   this.$refs.xxx.$on('atguigu',this.test)
+}
+```
+
+   3.  若想让自定义事件只能触发一次，可以使用`once`修饰符，或`$once`方法。 
+4.  触发自定义事件：`this.$emit('atguigu',数据)` ，子组件内进行触发，将数据传给父组件。
+4.  解绑自定义事件`this.$off('atguigu')` ，对组件实例进行销毁：`$destory()`会自动拆除组件身上的自定义事件，类似off。
+4.  组件上也可以绑定原生DOM事件，需要使用`native`修饰符。 
+4.  注意：通过`this.$refs.xxx.$on('atguigu',回调)`绑定自定义事件时，回调要么配置在methods中，要么用箭头函数，否则this指向会出问题（this指向子组件实例）！ 

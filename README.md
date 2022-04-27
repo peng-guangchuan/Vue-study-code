@@ -39,3 +39,5 @@
 7. [TodoList案例](vue_test/07_src_TodoList案例/App.vue)
 8. [webStorage](vue_test/08_浏览器本地存储/localStorage.html)
 9. [TodoList案例v2-本地存储](vue_test/09_src_TodoList_本地存储/App.vue)
+10. [组件自定义事件](vue_test/11_src_TodoList_自定义事件/App.vue)
+11. [TodoList案例v3-自定义事件](vue_test/11_src_TodoList_自定义事件/App.vue)
