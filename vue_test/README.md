@@ -152,3 +152,81 @@ mounted(){
 4.  解绑自定义事件`this.$off('atguigu')` ，对组件实例进行销毁：`$destory()`会自动拆除组件身上的自定义事件，类似off。
 4.  组件上也可以绑定原生DOM事件，需要使用`native`修饰符。 
 4.  注意：通过`this.$refs.xxx.$on('atguigu',回调)`绑定自定义事件时，回调要么配置在methods中，要么用箭头函数，否则this指向会出问题（this指向子组件实例）！ 
+
+
+## 全局事件总线（GlobalEventBus）
+
+1.  一种组件间通信的方式，适用于任意组件间通信。 
+1.  安装全局事件总线： 
+```javascript
+new Vue({
+	......
+	beforeCreate() {
+		Vue.prototype.$bus = this //安装全局事件总线，$bus就是当前应用的vm
+	},
+    ......
+})
+```
+
+3.  使用事件总线： 
+   1.  接收数据：A组件想接收数据，则在A组件中给$bus绑定自定义事件，事件的回调留在A组件自身。 
+```javascript
+methods(){
+  demo(data){......}
+}
+......
+mounted() {
+  this.$bus.$on('xxxx',this.demo)
+}
+```
+
+   2.  提供数据：`this.$bus.$emit('xxxx',数据)` 
+4.  最好在beforeDestroy钩子中，用$off去解绑当前组件所用到的事件。 
+## 消息订阅与发布（pubsub-js）
+
+1.  一种组件间通信的方式，适用于任意组件间通信。 
+1.  使用步骤： 
+   1.  安装pubsub：`npm i pubsub-js` 
+   1.  引入: `import pubsub from 'pubsub-js'` 
+   1.  接收数据：A组件想接收数据，则在A组件中订阅消息，订阅的回调留在A组件自身。 
+```javascript
+methods(){
+  demo(data){......}
+}
+......
+mounted() {
+  this.pid = pubsub.subscribe('xxx',this.demo) // 订阅消息，会返回一个消息的唯一id
+}
+```
+
+   4.  提供数据：`pubsub.publish('xxx',数据)` 
+   4.  最好在beforeDestroy钩子中，用`PubSub.unsubscribe(pid)`去取消订阅。 
+3. 无法被Vue Tools监听事件
+## nextTick
+
+1. 语法：`this.$nextTick(回调函数)`
+1. 作用：在下一次 DOM 更新结束后执行其指定的回调。
+1. 什么时候用：当改变数据后，要基于更新后的新DOM进行某些操作时，要在nextTick所指定的回调函数中执行。
+## Vue封装的过度与动画
+
+1.  作用：在插入、更新或移除 DOM元素时，在合适的时候给元素添加样式类名。 
+1.  图示：![image.png](https://cdn.nlark.com/yuque/0/2022/png/26754136/1651246681367-f785f4cc-ebea-4267-83ba-7b0a1409202a.png#clientId=ucfb20ac9-986f-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=382&id=ua3ae8a41&margin=%5Bobject%20Object%5D&name=image.png&originHeight=382&originWidth=946&originalType=binary&ratio=1&rotation=0&showTitle=false&size=119769&status=done&style=none&taskId=u25467ec2-88bc-44bd-bb5b-c7be1b94029&title=&width=946)
+1.  写法： 
+   1.  准备好样式： 
+      - 元素进入的样式： 
+         1. v-enter：进入的起点
+         1. v-enter-active：进入过程中
+         1. v-enter-to：进入的终点
+      - 元素离开的样式： 
+         1. v-leave：离开的起点
+         1. v-leave-active：离开过程中
+         1. v-leave-to：离开的终点
+   2. 使用`<transition>`包裹要过度的元素，并配置name属性： 
+```vue
+<transition name="hello">
+	<h1 v-show="isShow">你好啊！</h1>
+</transition>
+```
+
+   3. 备注：若有多个元素需要过度，则需要使用：`<transition-group>`，且每个元素都要指定`key`值。 
+   4. 一个CSS3的animation动画库 `animate.css` ：https://animate.style/
