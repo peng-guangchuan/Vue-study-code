@@ -24,6 +24,8 @@
 		methods: {
 			// 对于非网络请求（存在异步）的操作，可以直接使用mutations中的commit操作
 			increment(){
+				// 可以直接修改，但同样不建议，违反了使用vuex的初衷，还有无法被监控调试
+				// this.$store.$store.n = 10;
 				this.$store.commit('JIA',this.n)
 			},
 			decrement(){

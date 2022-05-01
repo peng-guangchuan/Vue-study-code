@@ -377,6 +377,9 @@ const actions = { // 响应组件中加的动作
   // context.dispatch('XXX', value)
 	jia(context,value){
 		// console.log('actions中的jia被调用了',miniStore,value)
+    // dispatch内部可以用this或context直接修改state里的值，但不推荐，因为vueTools无法监控调试
+    // context.state.sum = 10;
+		// this.state.sum = 10;
 		context.commit('JIA',value)
 	},
 }
@@ -405,6 +408,7 @@ export default new Vuex.Store({
 2.  组件中读取vuex中的数据：`$store.state.sum` 
 2.  组件中修改vuex中的数据：`$store.dispatch('action中的方法名',数据)` 或 `$store.commit('mutations中的方法名',数据)` 
 > 备注：若没有网络请求（异步操作）或其他业务逻辑，组件中也可以越过actions，即不写`dispatch`，直接编写`commit`
+> 注意：dispatch内部可以用this或context直接修改state里的值，但不推荐，因为vueTools无法监控调试。同样的，在组件的使用中也可以`this.$store.state.sum = 10;`直接修改，但同样不建议，违反了使用vuex的初衷，还有无法被监控调试
 
 ### 5.getters的使用
 

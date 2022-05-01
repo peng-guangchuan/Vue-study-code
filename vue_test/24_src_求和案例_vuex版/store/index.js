@@ -15,6 +15,9 @@ const actions = {
 	// context为默认参数，组件内调用：this.$store.dispatch('jia', value)
 	jiaOdd(context, value) { 
 		console.log('actions中的jiaOdd被调用了')
+		// dispatch内部可以用this或context直接修改state里的值，但不推荐，因为vueTools无法监控调试
+    	// context.state.sum = 10;
+		// this.state.sum = 10;
 		if (context.state.sum % 2) {
 			context.commit('JIA', value)
 		}
