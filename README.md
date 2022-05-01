@@ -6,6 +6,7 @@
 ## 版本
 - vue@2.6.12
 - @vue/cli@4.5.13
+- vuex@3
 - less-loader@7
 
 ## 目录
@@ -52,3 +53,10 @@
 20. [github搜索案例_axios](vue_test/20_src_github搜索案例_axios/components/Search.vue)
 21. [github搜索案例_vue-resource](vue_test/21_src_github搜索案例_vue-resource/components/Search.vue)
 22. vue的插槽_slot标签：[默认插槽](vue_test/22_vue插槽_slot/1_src_默认插槽/components/Category.vue)、[具名插槽](vue_test/22_vue插槽_slot/2_src_具名插槽/components/Category.vue)、[作用域插槽](vue_test/22_vue插槽_slot/3_src_作用域插槽/components/Category.vue)
+23. [求和案例_纯vue版](vue_test/23_src_求和案例_纯vue版/components/Count.vue)
+24. [求和案例v2_vuex基础版](vue_test/24_src_求和案例_vuex版/store/index.js)
+25. [求和案例v3_getters](vue_test/25_src_求和案例_getters/store/index.js)
+26. [求和案例v4_mapState&mapGetters](vue_test/26_src_求和案例_mapState与mapGetters/components/Count.vue)
+27. [求和案例v5_mapMutations&mapActions](vue_test/27_src_求和案例_mapMutations与mapActions/components/Count.vue)
+28. [求和案例v6_多组件共享vuex数据](vue_test/28_src_求和案例_多组件共享数据/store/index.js)
+29. [求和案例v7_vuex模块化](vue_test/29_src_求和案例_vuex模块化编码/store/index.js)
