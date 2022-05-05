@@ -8,6 +8,7 @@
 - @vue/cli@4.5.13
 - vuex@3
 - less-loader@7
+- vue-router@3
 
 ## 目录
 ### [Vue.js](https://cn.vuejs.org/)基础
@@ -60,3 +61,18 @@
 27. [求和案例v5_mapMutations&mapActions](vue_test/27_src_求和案例_mapMutations与mapActions/components/Count.vue)
 28. [求和案例v6_多组件共享vuex数据](vue_test/28_src_求和案例_多组件共享数据/store/index.js)
 29. [求和案例v7_vuex模块化](vue_test/29_src_求和案例_vuex模块化编码/store/index.js)
+30. [vue-router的基本使用](vue_test/30_src_路由的基本使用/router/index.js)
+31. [多级路由](vue_test/31_src_多级路由/router/index.js)
+32. [路由的query参数](vue_test/32_src_路由的query参数/pages/Message.vue)
+33. [命名路由](vue_test/33_src_命名路由/router/index.js)
+34. [路由的params参数](vue_test/34_src_路由的params参数/router/index.js)
+35. [路由的props配置](vue_test/35_src_路由的props配置/router/index.js)
+36. [router-link标签的replace属性](vue_test/36_src_router-link的replace属性/pages/Home.vue)
+37. [编程式路由导航](vue_test/37_src_编程式路由导航/pages/Message.vue)
+38. [路由组件的缓存](vue_test/38_src_缓存路由组件/pages/Home.vue)
+39. [路由组件的两个生命周期函数](vue_test/39_src_两个新的生命周期钩子/pages/News.vue)
+40. [全局路由守卫](vue_test/40_src_全局路由守卫/router/index.js)
+41. [独享路由守卫](vue_test/41_src_独享路由守卫/router/index.js)
+42. [组件内路由守卫](vue_test/42_src_组件内路由守卫/pages/About.vue)
+43. [路由的hash和history模式](vue_test/43_src_history模式与hash模式/router/index.js)
+[本章总结](vue_test/README.md)

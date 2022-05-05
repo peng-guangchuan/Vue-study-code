@@ -105,33 +105,29 @@ props:{
    1. 拆分静态组件：组件要按照功能点拆分，命名不要与html元素冲突。
    1. 实现动态组件：考虑好数据的存放位置，数据是一个组件在用，还是一些组件在用：
       1. 一个组件在用：放在组件自身即可。
-      1.  一些组件在用：放在他们共同的父组件上（状态提升）。
+      1. 一些组件在用：放在他们共同的父组件上（状态提升）。
    3. 实现交互：从绑定事件开始。 
-2.  props适用于：
-    1. 父组件 ==> 子组件 通信
-    2. 子组件 ==> 父组件 通信（要求父先给子一个函数） 
-3.  使用v-model时要切记：v-model绑定的值不能是props传过来的值，因为props是不可以修改的！ 
-4.  props传过来的若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。 
-
+2.  props适用于：(1)父组件 ==> 子组件 通信。(2).子组件 ==> 父组件 通信（要求父先给子一个函数） 
+2.  使用v-model时要切记：v-model绑定的值不能是props传过来的值，因为props是不可以修改的！ 
+2.  props传过来的若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。 
 ## webStorage
 
 1.  存储内容大小一般支持5MB左右（不同浏览器可能还不一样） 
-2.  浏览器端通过 Window.sessionStorage 和 Window.localStorage 属性来实现本地存储机制。 
-3. 相关API： 
-   1. `xxxxxStorage.setItem('key', 'value');`
+1.  浏览器端通过 Window.sessionStorage 和 Window.localStorage 属性来实现本地存储机制。 
+1.  相关API： 
+   1.  `xxxxxStorage.setItem('key', 'value');`
 该方法接受一个键和值作为参数，会把键值对添加到存储中，如果键名存在，则更新其对应的值。 
-   2.  `xxxxxStorage.getItem('person');`
+   1.  `xxxxxStorage.getItem('person');`
 		该方法接受一个键名作为参数，返回键名对应的值。 
-   3.  `xxxxxStorage.removeItem('key');`
+   1.  `xxxxxStorage.removeItem('key');`
 		该方法接受一个键名作为参数，并把该键名从存储中删除。 
-   4.  `xxxxxStorage.clear()`
+   1.  `xxxxxStorage.clear()`
 		该方法会清空存储中的所有数据。 
-4. 备注： 
-    1. SessionStorage存储的内容会随着浏览器窗口关闭而消失。
-    2. LocalStorage存储的内容，需要手动清除才会消失。
-    3. `xxxxxStorage.getItem(xxx)`如果xxx对应的value获取不到，那么getItem的返回值是null。
-    4. `JSON.parse(null)`的结果依然是null。
-
+4.  备注： 
+   1. SessionStorage存储的内容会随着浏览器窗口关闭而消失。
+   1. LocalStorage存储的内容，需要手动清除才会消失。
+   1. `xxxxxStorage.getItem(xxx)`如果xxx对应的value获取不到，那么getItem的返回值是null。
+   1. `JSON.parse(null)`的结果依然是null。
 ## 组件的自定义事件
 
 1.  一种组件间通信的方式，适用于：**子组件 ===> 父组件** 
@@ -152,7 +148,6 @@ mounted(){
 4.  解绑自定义事件`this.$off('atguigu')` ，对组件实例进行销毁：`$destory()`会自动拆除组件身上的自定义事件，类似off。
 4.  组件上也可以绑定原生DOM事件，需要使用`native`修饰符。 
 4.  注意：通过`this.$refs.xxx.$on('atguigu',回调)`绑定自定义事件时，回调要么配置在methods中，要么用箭头函数，否则this指向会出问题（this指向子组件实例）！ 
-
 
 ## 全局事件总线（GlobalEventBus）
 
@@ -229,14 +224,56 @@ mounted() {
 ```
 
    3. 备注：若有多个元素需要过度，则需要使用：`<transition-group>`，且每个元素都要指定`key`值。 
-   4. 一个CSS3的animation动画库 `animate.css` ：https://animate.style/
+4. 一个CSS3的animation动画库`animate.css`：[https://animate.style/](https://animate.style/)
+4. 注意：如果是引入的CSS文件，尽量不要放在assets目录下，然后Vue组件内import，因为import引入会被严格校验CSS文件内部的引用是否正确，许多框架的CSS文件含有外部文件字体的引用，如果不存在则整个CSS文件变为不可用。正确的做法是将CSS文件放在public下，在index.html文件中使用link标签
+## vue脚手架配置代理
+### 方法一
+	在vue.config.js中添加如下配置：
+```javascript
+devServer:{
+  proxy:"http://localhost:5000"
+}
+```
+说明：
 
+1. 优点：配置简单，请求资源时直接发给前端（8080）即可。
+1. 缺点：不能配置多个代理，不能灵活的控制请求是否走代理。
+1. 工作方式：若按照上述配置代理，当请求了前端不存在的资源时，那么该请求会转发给服务器 （优先匹配前端资源）
+### 方法二
+	编写vue.config.js配置具体代理规则：
+```javascript
+module.exports = {
+	devServer: {
+      proxy: {
+      '/api1': {// 匹配所有以 '/api1'开头的请求路径
+        target: 'http://localhost:5000',// 代理目标的基础路径
+        changeOrigin: true,
+        pathRewrite: {'^/api1': ''}
+      },
+      '/api2': {// 匹配所有以 '/api2'开头的请求路径
+        target: 'http://localhost:5001',// 代理目标的基础路径
+        changeOrigin: true,
+        pathRewrite: {'^/api2': ''}
+      }
+    }
+  }
+}
+/*
+   changeOrigin设置为true时，服务器收到的请求头中的host为：localhost:5000
+   changeOrigin设置为false时，服务器收到的请求头中的host为：localhost:8080
+   changeOrigin默认值为true
+*/
+```
+说明：
+
+1. 优点：可以配置多个代理，且可以灵活的控制请求是否走代理。
+1. 缺点：配置略微繁琐，请求资源时必须加前缀。
 ## 插槽（slot标签）
 
 1.  作用：让父组件可以向子组件指定位置插入html结构，也是一种组件间通信的方式，适用于 **父组件 ===> 子组件** 。 
 1.  分类：默认插槽、具名插槽、作用域插槽 
-2.  slot里的东西会解析后再传入，如果样式在外层，会渲染CSS后再传入，在里层，则传入DOM结构再渲染里层的CSS
-3.  使用方式： 
+1. slot里的东西会解析后再传入，如果样式在外层，会渲染CSS后再传入，在里层，则传入DOM结构再渲染里层的CSS
+1.  使用方式： 
    1.  默认插槽： 
 ```vue
 父组件中：
@@ -314,7 +351,6 @@ mounted() {
             }
         </script>
 ```
-
 ## Vuex（**状态管理模式）**
 ### 1.概念
 		在Vue中实现集中式状态（数据）管理的一个Vue插件，对vue应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信。
@@ -548,3 +584,320 @@ this.$store.commit('personAbout/ADD_PERSON',person)
    - `this.$store.dispatch('namespaced/xxx', value)`
    - `this.$store.commit('namespaced/XXX', value)`
    - `this.$store.getters['namespaced/xxx']`
+## 路由（router）
+
+1. 理解： 一个路由（route）就是一组映射关系（key - value），多个路由需要路由器（router）进行管理。
+1. 前端路由：key是路径，value是组件。
+### 1.基本使用
+
+1.  安装vue-router，命令：`npm i vue-router` 
+1.  应用插件：`Vue.use(VueRouter)` 
+1.  编写router配置项: 
+```javascript
+// 引入VueRouter
+import VueRouter from 'vue-router'
+// 引入Luyou 组件
+import About from '../components/About'
+import Home from '../components/Home'
+
+// 创建router实例对象，去管理一组一组的路由规则
+const router = new VueRouter({
+	routes:[ // 注意是 routes
+		{
+			path:'/about',
+			component:About
+		},
+		{
+			path:'/home',
+			component:Home
+		}
+	]
+})
+
+//暴露router
+export default router
+```
+
+4.  实现切换（active-class可配置高亮样式，to指定跳转的path，跳转到对应component） 
+```vue
+<router-link active-class="active" to="/about">About</router-link>
+```
+
+5.  指定展示位置，页面的路由跳转的组件在router-view位置进行展示
+```vue
+<router-view></router-view>
+```
+### 2.几个注意点
+
+1. 路由组件通常存放在`pages`文件夹，一般组件通常存放在`components`文件夹。
+1. 通过切换，“隐藏”了的路由组件，默认是被销毁掉的，需要的时候再去挂载。
+1. 每个组件都有自己的`$route`属性，里面存储着自己的路由信息。
+1. 整个应用只有一个router，可以通过组件的`$router`属性获取到。
+### 3.多级路由（多级路由）
+
+1.  配置路由规则，使用children配置项： 实际中通常最多使用到三级路由
+```javascript
+routes:[
+	{
+		path:'/about',
+		component:About,
+	},
+	{
+		path:'/home',
+		component:Home,
+		children:[ // 通过children配置子级路由
+			{
+				path:'news', // 此处一定不要写：/news
+				component:News
+			},
+			{
+				path:'message',// 此处一定不要写：/message
+				component:Message
+			}
+		]
+	}
+]
+```
+
+2.  跳转（要写完整路径）： 
+```vue
+<router-link to="/home/news">News</router-link>
+```
+### 4.路由的query参数
+
+1.  传递参数 
+```vue
+<!-- 跳转并携带query参数，to的字符串写法 -->
+<router-link :to="/home/message/detail?id=666&title=你好">跳转</router-link>
+				
+<!-- 跳转并携带query参数，to的对象写法 -->
+<router-link 
+	:to="{
+		path:'/home/message/detail',
+		query:{
+		   id:666,
+       title:'你好'
+		}
+	}"
+>跳转</router-link>
+```
+
+2.  接收参数： 
+```javascript
+this.$route.query.id // 插值语法上不用this，和vuex的store一样 
+this.$route.query.title
+```
+### 5.命名路由
+
+1.  作用：可以简化路由的跳转。 
+1.  如何使用 
+   1.  给路由命名
+   1.  简化跳转： 
+```vue
+<!--简化前，需要写完整的路径 -->
+<router-link to="/demo/test/welcome">跳转</router-link>
+
+<!--简化后，直接通过名字跳转 -->
+<router-link :to="{name:'hello'}">跳转</router-link>
+
+<!--简化写法配合传递参数 -->
+<router-link 
+	:to="{
+		name:'hello',
+		query:{
+		   id:666,
+       title:'你好'
+		}
+	}"
+>跳转</router-link>
+```
+### 6.路由的params参数
+
+1.  配置路由，声明接收params参数 
+```javascript
+{
+	path:'/home',
+	component:Home,
+	children:[
+		{
+			path:'news',
+			component:News
+		},
+		{
+			component:Message,
+			children:[
+				{
+					name:'xiangqing',
+					path:'detail/:id/:title', // 使用占位符声明接收params参数
+					component:Detail
+				}
+			]
+		}
+	]
+}
+```
+
+2.  传递参数 
+```vue
+<!-- 跳转并携带params参数，to的字符串写法 -->
+<router-link :to="/home/message/detail/666/你好">跳转</router-link>
+				
+<!-- 跳转并携带params参数，to的对象写法，使用params时必须用name，不能用path -->
+<router-link 
+	:to="{
+		name:'xiangqing',
+		params:{
+		   id:666,
+            title:'你好'
+		}
+	}"
+>跳转</router-link>
+```
+
+3.  接收参数： 
+```javascript
+this.$route.query.id // 插值语法上不用this，和vuex的store一样 
+this.$route.query.title
+```
+### 7.路由的props配置
+	作用：让路由组件更方便的收到参数
+```javascript
+{
+	name:'xiangqing',
+	path:'detail/:id',
+	component:Detail,
+
+	// 第一种写法：props值为对象，该对象中所有的key-value的组合最终都会通过props传给Detail组件
+	// props:{a:900}
+
+	// 第二种写法：props值为布尔值，布尔值为true，则把路由收到的所有params参数通过props传给Detail组件
+	// props:true
+	
+	// 第三种写法：props值为函数，该函数返回的对象中每一组key-value都会通过props传给Detail组件
+	props($route){ // 接收route作为参数
+		return {
+			id:route.query.id, // 解决布尔值不能传query参数
+			title:route.query.title
+		}
+	}
+
+```
+### 8.`<router-link>`的replace属性
+
+1. 作用：控制路由跳转时操作浏览器历史记录的模式
+1. 浏览器的历史记录有两种写入方式：分别为`push`和`replace`，栈结构，`push`是追加历史记录，在栈尾不断增加；`replace`是替换当前记录，将栈顶当前的记录删去在添加。路由跳转时候默认为`push`
+1. 如何开启`replace`模式：`<router-link replace .......>News</router-link>`
+### 9.编程式路由导航
+
+1.  作用：不借助`<router-link>`实现路由跳转，让路由跳转更加灵活 
+1.  具体编码： 
+```javascript
+//$router的两个API
+this.$router.push({
+	name:'xiangqing',
+		params:{
+			id:xxx,
+			title:xxx
+		}
+})
+
+this.$router.replace({
+	name:'xiangqing',
+		params:{
+			id:xxx,
+			title:xxx
+		}
+})
+this.$router.forward() //前进
+this.$router.back() //后退
+this.$router.go() // 输入数字，为跳转的步数，正为前进，负为后退，0会刷新当前页
+```
+### 10.缓存路由组件
+
+1.  作用：让不展示的路由组件保持挂载，不被销毁。 需要配合keep-alive使用
+1.  具体编码： 
+```vue
+<!-- 不使用include则内部的所有router-view都会被缓存，include的值为组件名 -->
+<!-- <keep-alive :include="['News','Message']"> 缓存指定的多个路由组件-->
+<keep-alive include="News">
+    <router-view></router-view>
+</keep-alive>
+```
+### 11.两个新的生命周期钩子
+
+1. 作用：路由组件所独有的两个钩子，用于捕获路由组件的激活状态。
+1. 具体名字： 
+   1. `activated`路由组件被激活时触发。
+   1. `deactivated`路由组件失活时触发。
+3. 未体现在官网生命周期八个的另外一个（上面为另外两个）为：$nextTick()，即真实DOM被挂载上后才触发
+### 12.路由守卫
+
+1.  作用：对路由进行权限控制 
+1.  分类：全局守卫、独享守卫、组件内守卫 
+1.  全局守卫: 
+```javascript
+// 全局前置守卫：初始化时执行、每次路由切换前执行
+router.beforeEach((to, from, next)=>{
+	console.log('beforeEach', to, from)
+	if(to.meta.isAuth){ // 判断当前路由是否需要进行权限控制
+		if(localStorage.getItem('school') === 'atguigu'){ // 权限控制的具体规则
+			next() // 放行
+		}else{
+			alert('暂无权限查看')
+			// next({name:'guanyu'})
+		}
+	}else{
+		next() // 放行
+	}
+})
+
+// 全局后置守卫：初始化时执行、每次路由切换后执行
+router.afterEach((to,from)=>{ // 无next，不用进行放行操作
+	console.log('afterEach',to,from)
+	if(to.meta.title){ 
+		document.title = to.meta.title // 修改网页的title
+	}else{
+		document.title = 'vue_test'
+	}
+})
+```
+
+4.  独享守卫：配置在routes数组对应的路由里，作为属性配置
+```javascript
+// 在匹配到该路由后，进入路由之前调用beforeEnter
+beforeEnter(to, from, next){ // 独享路由的配置方式，只有前置，无后置
+	console.log('beforeEnter', to, from)
+	if(to.meta.isAuth){ //判断当前路由是否需要进行权限控制
+		if(localStorage.getItem('school') === 'atguigu'){
+			next()
+		}else{
+			alert('暂无权限查看')
+			// next({name:'guanyu'})
+		}
+	}else{
+		next()
+	}
+}
+```
+
+5.  组件内守卫： 
+```javascript
+// 进入守卫：通过路由规则，进入该组件时被调用
+beforeRouteEnter (to, from, next) { // 注意放行，否则无法跳转
+},
+// 离开守卫：通过路由规则，离开该组件时被调用
+beforeRouteLeave (to, from, next) { // 注意放行，否则无法跳转
+}
+```
+### 13.路由器的两种工作模式
+
+1. 对于一个url来说，什么是hash值？—— #及其后面的内容就是hash值。
+1. hash值不会包含在 HTTP 请求中，即：hash值不会带给服务器。
+1. hash模式： 
+   1. 地址中永远带着#号，不美观 。
+   1. 若以后将地址通过第三方手机app分享，若app校验严格，则地址会被标记为不合法。
+   1. 兼容性较好。
+4. history模式： 
+   1. 地址干净，美观 。
+   1. 兼容性和hash模式相比略差。
+   1. 应用部署上线时需要后端人员支持，解决刷新页面服务端404的问题。
