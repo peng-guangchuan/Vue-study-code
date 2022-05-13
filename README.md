@@ -76,3 +76,9 @@
 42. [组件内路由守卫](vue_test/42_src_组件内路由守卫/pages/About.vue)
 43. [路由的hash和history模式](vue_test/43_src_history模式与hash模式/router/index.js)
 [本章总结](vue_test/README.md)
+### [Vue3](https://v3.cn.vuejs.org/)了解
+1. [工程结构分析](vue3_test/01_src_分析工程结构/main.js)
+2. [初始setup](vue3_test/02_src_初识setup/App.vue)
+3. [ref函数](vue3_test/03_src_ref函数/App.vue)
+4. [reactive函数](vue3_test/04_src_reactive函数/App.vue)
+5. [Vue3响应式原理](vue3_test/05_Vue3的响应式原理/Vue3的响应式原理.html)
