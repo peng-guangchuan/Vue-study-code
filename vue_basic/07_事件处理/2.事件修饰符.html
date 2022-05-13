@@ -48,7 +48,7 @@
 			<!-- 阻止默认事件（常用） -->
 			<a href="http://www.atguigu.com" @click.prevent="showInfo">点我提示信息</a>
 
-			<!-- 阻止事件冒泡（常用） -->
+			<!-- 阻止事件冒泡（常用），只触发button事件，不触发父容器事件 -->
 			<div class="demo1" @click="showInfo">
 				<button @click.stop="showInfo">点我提示信息</button>
 				<!-- 修饰符可以连续写 -->
@@ -58,7 +58,7 @@
 			<!-- 事件只触发一次（常用） -->
 			<button @click.once="showInfo">点我提示信息</button>
 
-			<!-- 使用事件的捕获模式 -->
+			<!-- 使用事件的捕获模式，和冒泡模式相反，从外向里触发 -->
 			<div class="box1" @click.capture="showMsg(1)">
 				div1
 				<div class="box2" @click="showMsg(2)">
@@ -66,12 +66,13 @@
 				</div>
 			</div>
 
-			<!-- 只有event.target是当前操作的元素时才触发事件； -->
+			<!-- 只有event.target是当前操作的元素时才触发事件；（未加self时，点击button也会触发div上的点击事件） -->
 			<div class="demo1" @click.self="showInfo">
-				<button @click="showInfo">点我提示信息</button>
+				<button>点我提示信息</button>
 			</div>
 
 			<!-- 事件的默认行为立即执行，无需等待事件回调执行完毕； -->
+			<!-- （demo里进行耗时操作时，不加passive需要demo结束滚动条才响应，加了后直接响应并且demo里的操作依旧进行） -->
 			<ul @wheel.passive="demo" class="list">
 				<li>1</li>
 				<li>2</li>

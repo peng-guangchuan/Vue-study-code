@@ -35,11 +35,10 @@
 			fullName: '张-三'
 		},
 		watch: {
-			
 			firstName(val) {
 				// 箭头函数指向定义时的环境，根据定义时的代码向外寻找this
 				setTimeout(() => { // 此处箭头函数并不是vue所管理的函数，但必须写成箭头函数
-					console.log(this) // window，因为箭头函数向外找this，而firstName为vue所管理的函数，this指向vue实例
+					console.log(this) // vm，因为箭头函数向外找this，而firstName为vue所管理的函数，this指向vue实例
 					this.fullName = val + '-' + this.lastName
 				}, 1000);
 			},
